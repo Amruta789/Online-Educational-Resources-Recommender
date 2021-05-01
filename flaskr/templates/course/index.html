@@ -16,7 +16,7 @@
           <div class="about">by {{ course['username'] }} on {{ course['created'].strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == course['lecturer_id'] %}
-          <a class="action" href="{{ url_for('course.update', id=course['_id']) }}">Edit</a>
+          <a class="action" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
         {% endif %}
       </header>
       <p class="body">{{ course['body'] }}</p>
