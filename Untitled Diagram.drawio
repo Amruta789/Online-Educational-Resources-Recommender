@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-06-15T06:08:33.611Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36" etag="TPEw0Ybk9JcVZIlVCvEL" version="14.7.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-06-15T06:08:57.211Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36" etag="5LoDk0qw6junW42hPu5W" version="14.7.7" type="github">
   <diagram id="7nU1eIY9QLICu4B9qE_H" name="Page-1">
     <mxGraphModel dx="849" dy="433" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -41,9 +41,6 @@
         </mxCell>
         <mxCell id="Y9fj9it7RLVxMw9HlYQP-10" value="Courses Info&lt;br&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="530" y="120" width="40" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="Y9fj9it7RLVxMw9HlYQP-11" value="Text" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="550" y="160" width="40" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
