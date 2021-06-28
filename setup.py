@@ -7,7 +7,7 @@ Created on Sat May  1 18:26:13 2021
 from setuptools import find_packages, setup
 
 setup(
-    name='flaskr',
+    name='TeachAid',
     version='1.0.0',
     packages=find_packages(),
     include_package_data=True,

@@ -7,15 +7,22 @@ Created on Sat Apr 24 16:39:20 2021
 import os
 
 import flask
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app(test_config=None):
     # create and configure the app
     app = flask.Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
+    # app.config.from_mapping(
+    #     SECRET_KEY='dev',
+    #     DATABASE=os.path.join(app.instance_path, 'TeachAid.sqlite'),
+    # )
+    app.config.from_object(Config)
     
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -35,8 +42,11 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
     
-    from . import db
+    # from . import db
+    # db.init_app(app)
+    from . import models
     db.init_app(app)
+    migrate.init_app(app, db)
     
     from . import auth
     app.register_blueprint(auth.bp)

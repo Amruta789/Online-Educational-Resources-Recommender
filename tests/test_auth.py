@@ -6,7 +6,7 @@ Created on Sat May  1 18:45:36 2021
 """
 import pytest
 from flask import g, session
-from flaskr.db import get_db
+from TeachAid.db import get_db
 
 
 def test_register(client, app):

@@ -4,7 +4,7 @@ Created on Sat May  1 18:43:02 2021
 
 @author: Amruta
 """
-from flaskr import create_app
+from TeachAid import create_app
 
 
 def test_config():
