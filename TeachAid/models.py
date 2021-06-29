@@ -26,4 +26,4 @@ class Course(db.Model):
     lecturer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Course {}>'.format(self.body)
+        return '<Course {}>'.format(self.title)

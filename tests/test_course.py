@@ -5,7 +5,7 @@ Created on Sat May  1 18:47:12 2021
 @author: Amruta
 """
 import pytest
-from TeachAid.db import get_db
+from TeachAid.olddb import get_db
 
 
 def test_index(client, auth):
