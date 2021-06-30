@@ -10,10 +10,14 @@ import flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 
 db = SQLAlchemy()
 migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
+#login.login_message = _l('Please log in to access this page.')
 
 def create_app(test_config=None):
     # create and configure the app
@@ -46,8 +50,9 @@ def create_app(test_config=None):
     # db.init_app(app)
     from . import models
     db.init_app(app)
-    migrate.init_app(app, db)
-    
+    migrate.init_app(app, db, render_as_batch=True)
+    login.init_app(app)
+
     from . import auth
     app.register_blueprint(auth.bp)
     

@@ -9,19 +9,15 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from TeachAid.auth import login_required
+from flask_login import login_required, current_user
 from TeachAid.olddb import get_db
+from TeachAid.models import Course
 
 bp = Blueprint('course', __name__)
 
 @bp.route('/')
 def index():
-    db = get_db()
-    courses = db.execute(
-        'SELECT c.id, title, body, created, lecturer_id, username'
-        ' FROM course c JOIN user u ON c.lecturer_id = u.id'
-        ' ORDER BY created DESC'
-    ).fetchall()
+    courses = Course.query.all()
     return render_template('course/index.html', courses=courses)
 
 @bp.route('/create', methods=('GET', 'POST'))

@@ -11,15 +11,16 @@
   {% for course in courses %}
     <article class="post">
       <header>
-        <div>
-          <h1>{{ course['title'] }}</h1>
-          <div class="about">by {{ course['username'] }} on {{ course['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
-        {% if g.user['id'] == course['lecturer_id'] %}
+          <div>
+              <h1>{{ course['title'] }}</h1>
+              <img src="{{ course.avatar(36) }}">
+              <div class="about">by {{ course.lecturer.username }} on {{ course['created'].strftime('%Y-%m-%d') }}</div>
+          </div>
+        {% if current_user.id == course['lecturer_id'] %}
           <a class="action" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
         {% endif %}
       </header>
-      <p class="body">{{ course['body'] }}</p>
+      <p class="body">{{ course['outline'] }}</p>
     </article>
     {% if not loop.last %}
       <hr>
