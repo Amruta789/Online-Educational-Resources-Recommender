@@ -5,13 +5,14 @@ Created on Sun Apr 25 16:38:30 2021
 @author: Amruta
 """
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
 
 from flask_login import login_required, current_user
-from TeachAid.olddb import get_db
 from TeachAid.models import Course
+from TeachAid.forms import CourseForm
+from TeachAid import db
 
 bp = Blueprint('course', __name__)
 
@@ -23,71 +24,39 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
-
-        if not title:
-            error = 'Title is required.'
-
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                'INSERT INTO course (title, body, lecturer_id)'
-                ' VALUES (?, ?, ?)',
-                (title, body, g.user['id'])
-            )
-            db.commit()
-            return redirect(url_for('course.index'))
-
+    form = CourseForm()
+    if form.validate_on_submit():
+        course = Course(title=form.title.data, outline=form.outline.data, lecturer=current_user)
+        db.session.add(course)
+        db.session.commit()
+        flash('Your course is now live!')
+        return redirect(url_for('index'))
     return render_template('course/create.html')
-
-def get_course(id, check_lecturer=True):
-    course = get_db().execute(
-        'SELECT c.id, title, body, created, lecturer_id, username'
-        ' FROM course c JOIN user u ON c.lecturer_id = u.id'
-        ' WHERE c.id = ?',
-        (id,)
-    ).fetchone()
-    if course is None:
-        abort(404, "Course id {0} doesn't exist.".format(id))
-    if check_lecturer and course['lecturer_id'] != g.user['id']:
-        abort(403)
-    return course
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
-    course = get_course(id)
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
+    form = CourseForm()
+    course = Course.query.filter_by(id==id).first()
+    if course is None:
+          flash('Course not found.')
+          return redirect(url_for('index'))
+    if form.validate_on_submit():
+        course.title = form.title.data
+        course.outline = form.outline.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('course.update'))
+    elif request.method == 'GET':
+        form.title.data = course.title
+        form.outline.data = course.outline
+    return render_template('course/update.html', form=form)
 
-        if not title:
-            error = 'Title is required.'
-
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                'UPDATE course SET title = ?, body = ?'
-                ' WHERE id = ?',
-                (title, body, id)
-            )
-            db.commit()
-            return redirect(url_for('course.index'))
-    return render_template('course/update.html', course=course)
-
-@bp.route('/<int:id>/delete', methods=('POST',))
-@login_required
-def delete(id):
-    get_course(id)
-    db = get_db()
-    db.execute('DELETE FROM course WHERE id = ?', (id,))
-    db.commit()
-    return redirect(url_for('course.index'))
+#@bp.route('/<int:id>/delete', methods=('POST',))
+#@login_required
+#def delete(id):
+#   get_course(id)
+#    db = get_db()
+#    db.execute('DELETE FROM course WHERE id = ?', (id,))
+#    db.commit()
+#    return redirect(url_for('course.index'))

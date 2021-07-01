@@ -2,10 +2,11 @@ from flask import (
     Blueprint, flash, redirect, render_template, request, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from TeachAid.models import User, Course
-from TeachAid.forms import LoginForm, RegistrationForm
+from TeachAid.forms import LoginForm, RegistrationForm, EmptyForm
+from TeachAid import db
 
 bp = Blueprint('user', __name__)
 
@@ -34,3 +35,32 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('user/edit_profile.html', title='Edit Profile',
                            form=form)
+
+@app.route('/learn/<courseid>', methods=['POST'])
+@login_required
+def follow(courseid):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        course = Course.query.filter_by(id=courseid).first()
+        if course is None:
+            flash('Course not found.')
+            return redirect(url_for('index'))
+        current_user.learn(course)
+        db.session.commit()
+        flash('You are learning {}!'.format(course.title))
+        return redirect(url_for('index'))
+
+
+@app.route('/unfollow/<courseid>', methods=['POST'])
+@login_required
+def unfollow(courseid):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        course = Course.query.filter_by(id==courseid).first()
+        if user is None:
+            flash('Course not found.')
+            return redirect(url_for('index'))
+        current_user.unfollow(course)
+        db.session.commit()
+        flash('You are not following {}.'.format(course.title))
+        return redirect(url_for('index'))

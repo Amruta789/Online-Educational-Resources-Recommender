@@ -39,17 +39,25 @@ class User(UserMixin, db.Model):
         secondaryjoin=(students.c.course_id == Course.id),
         backref=db.backref('students', lazy='dynamic'), lazy='dynamic')
 
-    def learn(self, user):
-        if not self.is_learning(user):
-            self.students.append(user)
+    def learn(self, course):
+        if not self.is_learning(course):
+            self.learns.append(course)
 
-    def unfollow(self, user):
-        if self.is_learning(user):
-            self.students.remove(user)
+    def unfollow(self, course):
+        if self.is_learning(course):
+            self.learns.remove(course)
 
-    def is_learning(self, user):
-        return self.students.filter(
-            student.c.student_id == user.id).count() > 0
+    def is_learning(self, course):
+        return self.learns.filter(
+            student.c.course_id == course.id).count() > 0
+
+    def get_learning_courses(self):
+        return Course.query.join(
+            students, (students.c.course_id == Course.id)).filter(
+                students.c.student_id == self.id)
+
+    def get_own_courses(self):
+        return Course.query.filter_by(lecturer_id==self.id)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

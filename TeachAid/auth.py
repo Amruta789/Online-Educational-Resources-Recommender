@@ -13,6 +13,7 @@ from flask_login import current_user, login_user, logout_user
 from werkzeug.urls import url_parse
 from TeachAid.models import User
 from TeachAid.forms import LoginForm, RegistrationForm
+from TeachAid import db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
