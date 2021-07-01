@@ -28,7 +28,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -44,7 +44,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('user.user', username=user.username)
         return redirect(next_page)
     return render_template('auth/login.html', title='Login', form=form)
         

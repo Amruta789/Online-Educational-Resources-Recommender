@@ -5,11 +5,22 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="title">Course Title</label>
-    <input name="title" id="title" value="{{ request.form['title'] }}" required>
-    <label for="body">Course Outline</label>
-    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
-    <input type="submit" value="Save">
+  <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <p>
+          {{ form.title.label }}<br>
+          {{ form.title(size=32) }}<br>
+          {% for error in form.title.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+      </p>
+      <p>
+          {{ form.outline.label }}<br>
+          {{ form.outline(size=32, rows=4) }}<br>
+          {% for error in form.outline.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+      </p>
+      <p>{{ form.submit() }}</p>
   </form>
 {% endblock %}

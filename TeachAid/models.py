@@ -18,7 +18,7 @@ class Course(db.Model):
     lecturer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def avatar(self, size):
-        digest = md5(self.id.encode('utf-8')).hexdigest()
+        digest = self.id
         return 'https://avatars.dicebear.com/api/jdenticon/{}.svg?w={}&h={}'.format(
             digest, size, size)
 
@@ -49,7 +49,7 @@ class User(UserMixin, db.Model):
 
     def is_learning(self, course):
         return self.learns.filter(
-            student.c.course_id == course.id).count() > 0
+            students.c.course_id == course.id).count() > 0
 
     def get_learning_courses(self):
         return Course.query.join(

@@ -5,19 +5,16 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from TeachAid.models import User, Course
-from TeachAid.forms import LoginForm, RegistrationForm, EmptyForm
+from TeachAid.forms import LoginForm, RegistrationForm, EmptyForm, EditProfileForm
 from TeachAid import db
 
-bp = Blueprint('user', __name__)
+bp = Blueprint('user', __name__,  url_prefix='/user')
 
-@bp.route('/<username>')
+@bp.route('/<username>/profile')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    courses = [
-        {'lecturer': user, 'title': 'Test course #1'},
-        {'lecturer': user, 'title': 'Test course #2'}
-    ]
+    courses = Course.query.all()
     return render_template('user/user.html', user=user, courses=courses)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -36,7 +33,7 @@ def edit_profile():
     return render_template('user/edit_profile.html', title='Edit Profile',
                            form=form)
 
-@app.route('/learn/<courseid>', methods=['POST'])
+@bp.route('/learn/<courseid>', methods=['POST'])
 @login_required
 def follow(courseid):
     form = EmptyForm()
@@ -51,7 +48,7 @@ def follow(courseid):
         return redirect(url_for('index'))
 
 
-@app.route('/unfollow/<courseid>', methods=['POST'])
+@bp.route('/unfollow/<courseid>', methods=['POST'])
 @login_required
 def unfollow(courseid):
     form = EmptyForm()

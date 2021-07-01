@@ -2,9 +2,6 @@
 
 {% block header %}
 <h1>{% block title %}Courses{% endblock %}</h1>
-  {% if current_user %}
-<a class="action" href="{{ url_for('course.create') }}">New</a>
-  {% endif %}
 {% endblock %}
 
 {% block content %}

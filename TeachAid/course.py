@@ -31,13 +31,13 @@ def create():
         db.session.commit()
         flash('Your course is now live!')
         return redirect(url_for('index'))
-    return render_template('course/create.html')
+    return render_template('course/create.html', form=form)
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
     form = CourseForm()
-    course = Course.query.filter_by(id==id).first()
+    course = Course.query.filter_by(id=id).first()
     if course is None:
           flash('Course not found.')
           return redirect(url_for('index'))
@@ -46,11 +46,11 @@ def update(id):
         course.outline = form.outline.data
         db.session.commit()
         flash('Your changes have been saved.')
-        return redirect(url_for('course.update'))
+        return redirect(url_for('course.update', id=id))
     elif request.method == 'GET':
         form.title.data = course.title
         form.outline.data = course.outline
-    return render_template('course/update.html', form=form)
+    return render_template('course/update.html', course=course, form=form)
 
 #@bp.route('/<int:id>/delete', methods=('POST',))
 #@login_required
