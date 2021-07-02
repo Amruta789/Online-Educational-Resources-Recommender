@@ -4,6 +4,8 @@ from TeachAid import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
+from time import time
+import jwt
 
 students = db.Table('students',
     db.Column('student_id', db.Integer, db.ForeignKey('user.id')),
@@ -57,7 +59,7 @@ class User(UserMixin, db.Model):
                 students.c.student_id == self.id)
 
     def get_own_courses(self):
-        return Course.query.filter_by(lecturer_id==self.id)
+        return Course.query.filter_by(lecturer_id=self.id)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -69,6 +71,20 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

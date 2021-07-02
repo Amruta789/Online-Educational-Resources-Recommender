@@ -6,9 +6,17 @@
 
 {% block content %}
     {% for course in courses %}
-    <p>
-        {% include '_course.html' %}
-    </p>
+        <p>
+            {% include '_course.html' %}
+        </p>
+        {% if not loop.last %}
+            <hr>
+        {% endif %}
     {% endfor %}
-  
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Newer posts</a>
+    {% endif %}
+    {% if next_url %}
+        <a href="{{ next_url }}">Older posts</a>
+    {% endif %}
 {% endblock %}

@@ -10,12 +10,21 @@ from TeachAid import db
 
 bp = Blueprint('user', __name__,  url_prefix='/user')
 
-@bp.route('/<username>/profile')
+@bp.route('/<username>')
 @login_required
 def user(username):
+    form = EmptyForm()
     user = User.query.filter_by(username=username).first_or_404()
     courses = Course.query.all()
-    return render_template('user/user.html', user=user, courses=courses)
+    return render_template('user/user.html', user=user, courses=courses, form=form)
+
+@bp.route('/<username>/profile')
+@login_required
+def userprofile(username):
+    form = EmptyForm()
+    user = User.query.filter_by(username=username).first_or_404()
+    courses = Course.query.all()
+    return render_template('user/public_profile.html', user=user, courses=courses, form=form)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -35,13 +44,12 @@ def edit_profile():
 
 @bp.route('/learn/<courseid>', methods=['POST'])
 @login_required
-def follow(courseid):
+def learn(courseid):
     form = EmptyForm()
     if form.validate_on_submit():
         course = Course.query.filter_by(id=courseid).first()
         if course is None:
             flash('Course not found.')
-            return redirect(url_for('index'))
         current_user.learn(course)
         db.session.commit()
         flash('You are learning {}!'.format(course.title))
@@ -53,7 +61,7 @@ def follow(courseid):
 def unfollow(courseid):
     form = EmptyForm()
     if form.validate_on_submit():
-        course = Course.query.filter_by(id==courseid).first()
+        course = Course.query.filter_by(id=courseid).first()
         if user is None:
             flash('Course not found.')
             return redirect(url_for('index'))

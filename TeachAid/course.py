@@ -5,21 +5,28 @@ Created on Sun Apr 25 16:38:30 2021
 @author: Amruta
 """
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for, current_app
 )
 from werkzeug.exceptions import abort
 
 from flask_login import login_required, current_user
 from TeachAid.models import Course
-from TeachAid.forms import CourseForm
+from TeachAid.forms import CourseForm, EmptyForm
 from TeachAid import db
 
 bp = Blueprint('course', __name__)
 
 @bp.route('/')
 def index():
-    courses = Course.query.all()
-    return render_template('course/index.html', courses=courses)
+    form=EmptyForm()
+    page = request.args.get('page', 1, type=int)
+    courses = Course.query.order_by(Course.created.desc()).paginate(
+        page, current_app.config['COURSES_PER_PAGE'], False)
+    next_url = url_for('index', page=courses.next_num) \
+        if courses.has_next else None
+    prev_url = url_for('index', page=courses.prev_num) \
+        if courses.has_prev else None
+    return render_template('course/index.html', courses=courses.items, form=form, next_url=next_url, prev_url=prev_url)
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required

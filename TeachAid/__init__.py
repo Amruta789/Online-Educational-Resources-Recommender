@@ -11,6 +11,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
@@ -18,14 +19,11 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 #login.login_message = _l('Please log in to access this page.')
+mail = Mail()
 
 def create_app(test_config=None):
     # create and configure the app
     app = flask.Flask(__name__, instance_relative_config=True)
-    # app.config.from_mapping(
-    #     SECRET_KEY='dev',
-    #     DATABASE=os.path.join(app.instance_path, 'TeachAid.sqlite'),
-    # )
     app.config.from_object(Config)
     
     if test_config is None:
@@ -46,12 +44,11 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
     
-    # from . import db
-    # db.init_app(app)
     from . import models
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     login.init_app(app)
+    mail.init_app(app)
 
     from . import auth
     app.register_blueprint(auth.bp)
