@@ -1,6 +1,8 @@
 
 <!doctype html>
 <title>{% block title %}{% endblock %} - TeachAid</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://cse.google.com/cse.js?cx=54b0e5c669679dac6"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
   <h1>TeachAid</h1>
@@ -9,6 +11,7 @@
           <li><a href="{{url_for('user.user', username=current_user.username)}}">{{ current_user.username }}</a>
           <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
+          <li><a href="{{ url_for('course.search_web') }}">Search Web</a>
           <li><a href="{{ url_for('auth.register') }}">Register</a>
           <li><a href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
