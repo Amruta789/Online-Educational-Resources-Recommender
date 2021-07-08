@@ -6,12 +6,9 @@
         <td><h1>User: {{ user.username }}</h1></td>
     </tr>
 </table>
+<div class="row row-cols-1 row-cols-md-5 g-4">
     {% for course in user.get_own_courses() %}
-        <p>
-            {% include '_course.html' %}
-        </p>
-        {% if not loop.last %}
-            <hr>
-        {% endif %}
+            {% include '_card.html' %}
     {% endfor %}
+</div>  
 {% endblock %}

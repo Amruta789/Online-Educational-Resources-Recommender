@@ -4,14 +4,14 @@ html {
   padding: 1rem;
 }
 
-body {
-  max-width: 960px;
-  margin: 0 auto;
-  background: white;
-}
+/* body { */
+  /* max-width: 960px; */
+  /* margin: 0 auto; */
+  /* background: white; */
+/* } */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: serif;
+  /* font-family: serif; */
   color: #377ba8;
   margin: 1rem 0;
 }
@@ -131,4 +131,8 @@ input.danger {
 input[type=submit] {
   align-self: start;
   min-width: 10em;
+}
+
+.gcse-searchresults{
+  box-sizing: content-box;
 }

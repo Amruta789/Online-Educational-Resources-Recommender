@@ -44,6 +44,16 @@ def create():
         return redirect(url_for('index'))
     return render_template('course/create.html', form=form)
 
+@bp.route('/<int:id>/course', methods=('GET', 'POST'))
+@login_required
+def get_course(id):
+    form=EmptyForm()
+    course = Course.query.filter_by(id=id).first()
+    if course is None:
+          flash('Course not found.')
+          return redirect(url_for('index'))    
+    return render_template('course/course.html', course=course, form=form)
+
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):

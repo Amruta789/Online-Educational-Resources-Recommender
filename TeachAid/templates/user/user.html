@@ -17,44 +17,18 @@
     {% if current_user.is_authenticated %}
         <a class="action" href="{{ url_for('course.create') }}">New</a>
     {% endif %}
-    {% for course in courses %}
-        {% if current_user.id == course['lecturer_id'] %}
-            <article class="post">
-                <header>
-                    <div>
-                        <h1>{{ course['title'] }}</h1>
-                        <img src="{{ course.avatar(36) }}">
-                        <div class="about">by {{ course.lecturer.username }} on {{ course['created'].strftime('%Y-%m-%d') }}</div>
-                    </div>
-                    <a class="action" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
-                </header>
-                <p class="body">{{ course['outline'] }}</p>
-            </article>
-        {% endif %}
-     {% endfor %}
+<div class="row row-cols-1 row-cols-md-5 g-4">
+    {% for course in user.get_own_courses() %}
+            {% include '_card.html' %}
+    {% endfor %}
+</div>
 <hr>
 <h1>Learning courses</h1>
+<div class="row row-cols-1 row-cols-md-5 g-4">
     {% for course in courses %}
         {% if current_user.is_learning(course) %}
-            <article class="post">
-                <header>
-                    <div>
-                        <h1>{{ course['title'] }}</h1>
-                        <img src="{{ course.avatar(36) }}">
-                        <div class="about">by {{ course.lecturer.username }} on {{ course['created'].strftime('%Y-%m-%d') }}</div>
-                    </div>
-
-                    <form action="{{ url_for('user.unfollow', courseid=course['id']) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value='Unfollow') }}
-                    </form>
-
-                </header>
-                <p class="body">{{ course['outline'] }}</p>
-            </article>
-            {% if not loop.last %}
-                <hr>
-            {% endif %}
+            {% include '_card.html' %}           
         {% endif %}
     {% endfor %}
+</div>
 {% endblock %}
