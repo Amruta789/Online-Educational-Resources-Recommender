@@ -1,22 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-<table>
-    <tr valign="top">
-        <td><img src="{{ user.avatar(128) }}"></td>
-        <td>
-        <h1>User: {{ user.username }}</h1><br/>
+<div class="d-flex">
+    <div class="flex-shrink-0">
+        <img src="{{ user.avatar(128) }}">
+    </div>
+    <div class="flex-grow-1 ms-3">
+        <h1>User: {{ user.username }}</h1> 
         <h3>Email: {{ user.email }}</h3>
-        </td>
-    </tr>
-</table>
-{% if user == current_user %}
-<p><a href="{{ url_for('user.edit_profile') }}">Edit your profile</a></p>
-{% endif %}
+        {% if user == current_user %}
+            <p><a class="btn btn-primary" href="{{ url_for('user.edit_profile') }}">Edit your profile</a></p>
+        {% endif %}
+    </div>
+</div>
 <hr>
-<h1>Manage own courses</h1>
-    {% if current_user.is_authenticated %}
-        <a class="action" href="{{ url_for('course.create') }}">New</a>
-    {% endif %}
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Manage own courses</h1>
+    <div>
+        {% if current_user.is_authenticated %}
+            <a class="btn btn-primary" href="{{ url_for('course.create') }}">New</a>
+        {% endif %}
+    </div>
+</div>    
 <div class="row row-cols-1 row-cols-md-5 g-4">
     {% for course in user.get_own_courses() %}
             {% include '_card.html' %}
