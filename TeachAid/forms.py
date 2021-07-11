@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.fields.core import FieldList, FormField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from TeachAid.models import User
 
@@ -44,10 +45,20 @@ class EditProfileForm(FlaskForm):
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
 
+class ModuleForm(FlaskForm):
+    class Meta:
+        csrf=False
+    module_name=StringField('Module Name', validators=[DataRequired()])
+
 class CourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     outline = TextAreaField('Course Outline', validators=[
         DataRequired(), Length(min=1, max=140)])
+    modules = FieldList(
+            FormField(ModuleForm),
+            min_entries=1,
+            max_entries=30
+            )
     submit = SubmitField('Submit')
 
 class ResetPasswordRequestForm(FlaskForm):

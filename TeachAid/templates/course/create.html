@@ -1,4 +1,9 @@
+{% import "course/module_macro.html" as macros %}
 {% extends 'base.html' %}
+{% block head %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='modulesform.js') }}"></script>
+{% endblock %}
 
 {% block header %}
   <h1>{% block title %}New Course{% endblock %}</h1>
@@ -21,6 +26,19 @@
           <span style="color: red;">[{{ error }}]</span>
           {% endfor %}
       </p>
+      <a id="add" href="#">Add Module</a>
+      {# Show all subforms #}
+      <div id="subforms-container">
+          {% for subform in form.modules %}
+              {{ macros.render_module_form(subform, loop.index0) }}
+          {% endfor %}
+      </div>
+      {% for error in form.modules.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      {# Form template #}
+      {{ macros.render_module_form(_template, '_') }}
+
       <p>{{ form.submit() }}</p>
   </form>
 {% endblock %}

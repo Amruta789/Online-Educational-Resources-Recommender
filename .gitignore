@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 .vs/
+.vscode/
 client_secret_940755153657-afi0crurmfv1lsebpba0eo613tuv97an.apps.googleusercontent.com.json

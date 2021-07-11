@@ -32,5 +32,11 @@
     </div> 
     <hr>   
     <p class="body">{{ course['outline'] }}</p>
+    <h3>Modules</h3>
+    <div>
+        {% for module in course.modules %}
+            <div>{{ module.module_name }}</div>
+        {% endfor%}
+    </div>
 </article>
 {% endblock %}

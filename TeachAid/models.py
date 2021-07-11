@@ -27,6 +27,11 @@ class Course(db.Model):
     def __repr__(self):
         return '<Course {}>'.format(self.title)
 
+class Module(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    module_name = db.Column(db.String(140))
+    course = db.relationship('Course', backref=db.backref('modules', lazy='dynamic', collection_class=list))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
