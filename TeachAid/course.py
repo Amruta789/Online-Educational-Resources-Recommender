@@ -28,10 +28,6 @@ def index():
         if courses.has_prev else None
     return render_template('course/index.html', courses=courses.items, form=form, next_url=next_url, prev_url=prev_url)
 
-@bp.route('/searchweb')
-def search_web():
-    return render_template('course/search.html')
-
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():

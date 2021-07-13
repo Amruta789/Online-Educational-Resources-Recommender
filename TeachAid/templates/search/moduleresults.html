@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ module['module_name'] }}</h1>
+    {% for recommendation in youtube_recommendations %}
+        <div class="d-flex">
+            <div class="flex-shrink-0">
+                <img src="{{ recommendation['imageURL']['url'] }}" width="{{ recommendation['imageURL']['width'] }}" height="{{ recommendation['imageURL']['height'] }}">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <a href="{{ recommendation['url'] }}">{{ recommendation['title'] }}</a>
+                <p>{{ recommendation['description' ]}}</p>
+                <a href="{{ recommendation['channelURL'] }}">{{ recommendation ['channelTitle'] }}</a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -22,7 +22,7 @@ DEVELOPER_KEY = 'REPLACE ME'
 #os.environ.get('YOUTUBE_API_KEY')
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
-
+ 
 def youtube_search(options):
   youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
     developerKey=DEVELOPER_KEY)
@@ -32,7 +32,10 @@ def youtube_search(options):
   search_response = youtube.search().list(
     q=options.q,
     part='id,snippet',
-    maxResults=options.max_results
+    maxResults=options.max_results,
+    safeSearch='strict',
+    topicId='/m/01k8wb',
+    relevanceLanguage='EN'
   ).execute()
 
   videos = []

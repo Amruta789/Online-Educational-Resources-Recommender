@@ -11,7 +11,7 @@ students = db.Table('students',
     db.Column('student_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('course_id', db.Integer, db.ForeignKey('course.id'))
 )
-    
+
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title =  db.Column(db.String(140))
@@ -33,6 +33,17 @@ class Module(db.Model):
     module_name = db.Column(db.String(140))
     course = db.relationship('Course', backref=db.backref('modules', lazy='dynamic', collection_class=list))
 
+class YouTubeContent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150))
+    description = db.Column(db.String(240))
+    url=db.Column(db.String(140))
+    channel_title=db.Column(db.String(140))
+    channel_url=db.Column(db.String(140))
+    image_url=db.Column(db.String(100))
+    module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
+    module = db.relationship('Module', backref=db.backref('youtube_content',lazy='dynamic', collection_class=list))
+    
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)

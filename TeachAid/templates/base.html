@@ -27,7 +27,7 @@
                   <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('index')}}">Home</a></li>
                   <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('user.user', username=current_user.username)}}">{{ current_user.username }}</a>
                   <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
-                  <li class="nav-item"><a class="nav-link" href="{{ url_for('course.search_web') }}">Search Web</a>
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('search.search_web') }}">Search Web</a>
             {% else %}
                   <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
                   <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>

@@ -35,7 +35,7 @@
     <h3>Modules</h3>
     <div>
         {% for module in course.modules %}
-            <div>{{ module.module_name }}</div>
+            <div><a href="{{ url_for('search.get_recommendations', id=module.id)}}">{{ module.module_name }}</a></div>
         {% endfor%}
     </div>
 </article>

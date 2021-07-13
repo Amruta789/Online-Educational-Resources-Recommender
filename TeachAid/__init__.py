@@ -56,6 +56,9 @@ def create_app(test_config=None):
     from . import course
     app.register_blueprint(course.bp)
 
+    from .import search
+    app.register_blueprint(search.bp)
+
     from . import user
     app.register_blueprint(user.bp)
     app.add_url_rule('/', endpoint='index')
