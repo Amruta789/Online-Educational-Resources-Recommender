@@ -10,7 +10,6 @@ from googleapiclient.errors import HttpError
 bp = Blueprint('search', __name__)
 
 DEVELOPER_KEY = current_app.config['GOOGLE_YOUTUBE_API_KEY']
-
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'   
 
@@ -45,8 +44,9 @@ def youtube_search(keyword):
             youtubeitem['url']=urlplaylist+search_result['id']['playlistId']
         youtubeitem['title']=search_result['snippet']['title']
         youtubeitem['description']=search_result['snippet']['description']
-        youtubeitem['channelTitle']=search_result['channelTitle']
-        youtubeitem['imageURL']=search_result['snippet']['thumbnail']['medium']
+        youtubeitem['channelTitle']=search_result['snippet']['channelTitle']
+        youtubeitem['channelURL']=urlchannel+search_result['snippet']['channelId']
+        youtubeitem['imageURL']=search_result['snippet']['thumbnails']['medium']
         print(youtubeitem)
         youtube_recommendations.append(youtubeitem)
     return youtube_recommendations
@@ -55,7 +55,7 @@ def youtube_search(keyword):
 def search_web():
     return render_template('search/search.html')
 
-bp.route('/<int:id>/getresults',methods=('GET','POST'))
+@bp.route('/<int:id>/getresults',methods=('GET','POST'))
 @login_required
 def get_recommendations(id):
     module=Module.query.filter_by(id=id).first()

@@ -1,8 +1,8 @@
-"""Added Youtube content
+"""Added youtube contents
 
-Revision ID: 19e5dd1360a2
+Revision ID: 4b675ae7bc64
 Revises: aac7ae7db672
-Create Date: 2021-07-13 21:05:37.230085
+Create Date: 2021-07-14 09:09:21.380908
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '19e5dd1360a2'
+revision = '4b675ae7bc64'
 down_revision = 'aac7ae7db672'
 branch_labels = None
 depends_on = None
@@ -26,6 +26,8 @@ def upgrade():
     sa.Column('channel_title', sa.String(length=140), nullable=True),
     sa.Column('channel_url', sa.String(length=140), nullable=True),
     sa.Column('image_url', sa.String(length=100), nullable=True),
+    sa.Column('module_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['module_id'], ['module.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
