@@ -41,14 +41,14 @@ def youtube_search(keyword, developer_key):
         youtubeitem['description']=search_result['snippet']['description']
         youtubeitem['channelTitle']=search_result['snippet']['channelTitle']
         youtubeitem['channelURL']=urlchannel+search_result['snippet']['channelId']
-        youtubeitem['imageURL']=search_result['snippet']['thumbnails']['medium']
+        youtubeitem['imageURL']=search_result['snippet']['thumbnails']['default']
         print(youtubeitem)
         youtube_recommendations.append(youtubeitem)
     return youtube_recommendations
 
 def google_search(keyword, startIndex, developer_key):
     service = build("customsearch", "v1",
-            developerKey=DEVELOPER_KEY)
+            developerKey=developer_key)
     search_response = service.cse().list(
         q=keyword,
         cx='54b0e5c669679dac6',
