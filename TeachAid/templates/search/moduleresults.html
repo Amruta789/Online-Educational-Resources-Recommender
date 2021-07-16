@@ -1,6 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>{{ module['module_name'] }}</h1>
+    <h2>Results from Google</h2>
+    {% for reco in google_recommendations %}
+        {% if 'imageUrl' in reco %}
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="{{ reco['imageUrl']}}" width="120" height="90">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <a href="{{ reco['url'] }}">{{ reco['title'] }}</a>
+                    <p>{{ reco['description' ]}}</p>
+                </div>
+            </div>         
+        {% else %}
+            <div>
+                <a href="{{ reco['url'] }}">{{ reco['title'] }}</a>
+                <p>{{ reco['description' ]}}</p>
+            </div>            
+        {% endif %}
+        <hr>
+    {% endfor %}
+    <h2>Results from Youtube</h2>
     {% for recommendation in youtube_recommendations %}
         <div class="d-flex">
             <div class="flex-shrink-0">
@@ -12,6 +33,7 @@
                 <a href="{{ recommendation['channelURL'] }}">{{ recommendation ['channelTitle'] }}</a>
             </div>
         </div>
+        <hr>
     {% endfor %}
 
 {% endblock %}
