@@ -12,13 +12,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from elasticsearch import Elasticsearch
 
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
-#login.login_message = _l('Please log in to access this page.')
+login.login_message = 'Please log in to access this page.'
 mail = Mail()
 
 def create_app(test_config=None):
@@ -39,6 +40,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
     # a simple page that says hello
     @app.route('/hello')
     def hello():

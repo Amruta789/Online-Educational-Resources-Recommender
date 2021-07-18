@@ -88,3 +88,9 @@ def get_recommendations(id):
         flash('Google results not found')
         return redirect(url_for('index'))
     return render_template('search/moduleresults.html', google_recommendations=google_recommendations, youtube_recommendations=youtube_recommendations, module=module) 
+
+@bp.route('/<int:id>/addToModule',methods=('GET','POST'))
+@login_required
+def add_youtube_content(id):
+    module=Module.query.filter_by(id=id).first()
+    course=Course.query.filter_by(id=module.course_id).first()

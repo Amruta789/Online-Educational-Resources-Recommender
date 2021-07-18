@@ -3,7 +3,17 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextA
 from wtforms.fields.core import FieldList, FormField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from TeachAid.models import User
+from flask import request
 
+class SearchForm(FlaskForm):
+    q = StringField('Search', validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        if 'csrf_enabled' not in kwargs:
+            kwargs['csrf_enabled'] = False
+        super(SearchForm, self).__init__(*args, **kwargs)
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -52,7 +62,7 @@ class ModuleForm(FlaskForm):
 
 class CourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    outline = TextAreaField('Course Outline', validators=[
+    outline = TextAreaField('Course Description', validators=[
         DataRequired(), Length(min=1, max=140)])
     modules = FieldList(
             FormField(ModuleForm),

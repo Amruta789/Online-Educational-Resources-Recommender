@@ -13,3 +13,4 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') # your-email-password
     ADMINS = ['imtech2k18@gmail.com']
     GOOGLE_YOUTUBE_API_KEY = os.environ.get('GOOGLE_YOUTUBE_API_KEY')
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
