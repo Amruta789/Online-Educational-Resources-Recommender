@@ -16,11 +16,10 @@ from TeachAid import db
 
 bp = Blueprint('course', __name__)
 
-# @bp.before_app_request
-# def before_request():
-#     if current_user.is_authenticated:
-#         db.session.commit()
-#         g.search_form = SearchForm()
+@bp.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        g.search_form = SearchForm()
 
 @bp.route('/')
 def index():
@@ -40,8 +39,7 @@ def search():
     if not g.search_form.validate():
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
-    courses, total = Course.search(g.search_form.q.data, page,
-                               current_app.config['COURSES_PER_PAGE'])
+    courses, total = Course.search(g.search_form.q.data, page,current_app.config['COURSES_PER_PAGE'])
     next_url = url_for('course.search', q=g.search_form.q.data, page=page + 1) \
         if total > page * current_app.config['COURSES_PER_PAGE'] else None
     prev_url = url_for('course.search', q=g.search_form.q.data, page=page - 1) \

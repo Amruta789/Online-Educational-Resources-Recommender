@@ -2,18 +2,18 @@
     <div class="card h-100" style="width: 15rem;">
         <img src="{{ course.avatar(10) }}" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title"><a class="text-decoration-none" href="{{ url_for('course.get_course',id=course.id)}}">{{ course['title'] }}</a></h5>
+          <h5 class="card-title"><a class="text-decoration-none" href="{{ url_for('course.get_course',id=course.id)}}">{{ course.title }}</a></h5>
           <p class="card-text">by <a href="{{ url_for('user.userprofile',username=course.lecturer.username)}}">{{ course.lecturer.username }}</a></p>
           {% if current_user.is_authenticated %}
-                {% if current_user.id == course['lecturer_id'] %}
-                    <a class="btn btn-info" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
+                {% if current_user.id == course.lecturer_id %}
+                    <a class="btn btn-info" href="{{ url_for('course.update', id=course.id) }}">Edit</a>
                 {% elif not current_user.is_learning(course) %}
-                <form action="{{ url_for('user.learn', courseid=course['id']) }}" method="post">
+                <form action="{{ url_for('user.learn', courseid=courseid) }}" method="post">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Learn', class_='btn btn-primary') }}
                 </form>
                 {% else %}
-                <form action="{{ url_for('user.unfollow', courseid=course['id']) }}" method="post">
+                <form action="{{ url_for('user.unfollow', courseid=course.id) }}" method="post">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Unfollow', class_='btn btn-warning') }}
                 </form>
