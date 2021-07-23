@@ -41,7 +41,7 @@
   <p>{{ form.submit() }}</p>
 </form>
 <hr>
-{# <form action="{{ url_for('course.delete', id=course['id']) }}" method="post"> #}
-    <!--<input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">-->
-{# </form> #}
+<form action="{{ url_for('course.delete', id=course.id) }}" method="post"> 
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+</form>
 {% endblock %}

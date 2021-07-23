@@ -103,11 +103,11 @@ def update(id):
             form.modules.append_entry(module)
     return render_template('course/update.html', course=course, form=form, _template=template_form)
 
-#@bp.route('/<int:id>/delete', methods=('POST',))
-#@login_required
-#def delete(id):
-#   get_course(id)
-#    db = get_db()
-#    db.execute('DELETE FROM course WHERE id = ?', (id,))
-#    db.commit()
-#    return redirect(url_for('course.index'))
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
+def delete(id):
+    course = Course.query.filter_by(id=id).first()
+    db.session.delete(course)
+    db.session.commit()
+    flash('This course has been deleted')
+    return redirect(url_for('index'))
