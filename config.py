@@ -3,6 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     COURSES_PER_PAGE = 3
+    UPLOADS_DEFAULT_DEST=os.path.join(basedir, 'instance/uploads')
     SECRET_KEY = 'dev'
     SQLALCHEMY_DATABASE_URI ='sqlite:///' + os.path.join(basedir, 'instance/search.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

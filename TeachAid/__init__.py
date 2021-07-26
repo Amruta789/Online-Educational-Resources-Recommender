@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_uploads import configure_uploads
 from elasticsearch import Elasticsearch
 
 
@@ -51,6 +52,8 @@ def create_app(test_config=None):
     migrate.init_app(app, db, render_as_batch=True)
     login.init_app(app)
     mail.init_app(app)
+    from .user import profilephotos
+    configure_uploads(app,profilephotos)
 
     from . import auth
     app.register_blueprint(auth.bp)

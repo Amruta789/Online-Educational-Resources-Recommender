@@ -5,6 +5,12 @@
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
+            {{ form.file }}<br>
+            {% for error in form.file.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}<br>
             {% for error in form.username.errors %}

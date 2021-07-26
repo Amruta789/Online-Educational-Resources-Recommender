@@ -3,12 +3,16 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_uploads import UploadSet, IMAGES, UploadNotAllowed
+
 from werkzeug.urls import url_parse
 from TeachAid.models import User, Course
-from TeachAid.forms import LoginForm, RegistrationForm, EmptyForm, EditProfileForm
+from TeachAid.forms import EmptyForm, EditProfileForm
 from TeachAid import db
 
 bp = Blueprint('user', __name__,  url_prefix='/user')
+
+profilephotos = UploadSet('profilephotos',IMAGES)
 
 @bp.route('/<username>')
 @login_required
@@ -33,12 +37,22 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
+        if form.file.data:
+            profileimage = form.file.data
+            try:
+                filename = profilephotos.save(profileimage)
+            except UploadNotAllowed:
+                flash('The upload was not allowed.', category='warning')
+            else:
+                current_user.imgsrc='user_'+current_user.id+'_'+filename
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('user.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        if current_user.imgsrc:
+            form.file.data = current_user.imgsrc
     return render_template('user/edit_profile.html', title='Edit Profile',
                            form=form)
 

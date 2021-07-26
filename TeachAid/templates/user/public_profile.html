@@ -2,7 +2,11 @@
 {% block content %}
 <div class="d-flex">
     <div class="flex-shrink-0">
-        <img src="{{ user.avatar(128) }}">
+        {% if user.imgsrc %}
+            <img src="{{ user.imgsrc }}" width="128" height="128">
+        {% else %}
+            <img src="{{ user.avatar(128) }}">
+        {% endif %}
     </div>
     <div class="flex-grow-1 ms-3">
         <h1>User: {{ user.username }}</h1> 

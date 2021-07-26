@@ -92,6 +92,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     about_me = db.Column(db.String(140))
     password_hash = db.Column(db.String(128))
+    imgsrc = db.Column(db.String(100))
     courses = db.relationship('Course', backref='lecturer', lazy='dynamic')
     learns = db.relationship(
         'Course', secondary=students,
