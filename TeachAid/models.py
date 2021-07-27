@@ -59,6 +59,7 @@ class Course(SearchableMixin, db.Model):
     title =  db.Column(db.String(140))
     outline = db.Column(db.String(240))
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    profileimg = db.Column(db.String(100))
     lecturer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def avatar(self, size):

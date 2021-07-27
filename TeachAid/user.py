@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
@@ -22,6 +22,7 @@ def user(username):
     courses = Course.query.all()
     return render_template('user/user.html', user=user, courses=courses, form=form)
 
+
 @bp.route('/<username>/profile')
 @login_required
 def userprofile(username):
@@ -40,19 +41,17 @@ def edit_profile():
         if form.file.data:
             profileimage = form.file.data
             try:
-                filename = profilephotos.save(profileimage)
+                filename = profilephotos.save(profileimage, name='user_'+str(current_user.id)+'_'+form.file.data.filename)
             except UploadNotAllowed:
                 flash('The upload was not allowed.', category='warning')
             else:
-                current_user.imgsrc='user_'+current_user.id+'_'+filename
+                current_user.imgsrc='profilephotos/'+filename
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('user.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-        if current_user.imgsrc:
-            form.file.data = current_user.imgsrc
     return render_template('user/edit_profile.html', title='Edit Profile',
                            form=form)
 

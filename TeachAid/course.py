@@ -13,8 +13,11 @@ from flask_login import login_required, current_user
 from TeachAid.models import Course, Module
 from TeachAid.forms import CourseForm, EmptyForm, ModuleForm, SearchForm
 from TeachAid import db
+from flask_uploads import UploadSet, IMAGES, UploadNotAllowed
 
 bp = Blueprint('course', __name__)
+
+courseprofiles = UploadSet('courseprofiles', IMAGES)
 
 @bp.before_app_request
 def before_request():
@@ -57,6 +60,14 @@ def create():
         for module in form.modules.data:
             new_module = Module(**module)
             course.modules.append(new_module)
+        if form.profile.data:
+            profileimage = form.profile.data
+            try:
+                filename = courseprofiles.save(profileimage, name='course_'+str(current_user.id)+'_'+form.profile.data.filename)
+            except UploadNotAllowed:
+                flash('The upload was not allowed.', category='warning')
+            else:
+                course.profileimg='courseprofiles/'+filename
         db.session.add(course)
         db.session.commit()
         flash('Your course is now live!')
@@ -93,6 +104,14 @@ def update(id):
             if flag==0:
                 new_module = Module(**moduleform)  
                 course.modules.append(new_module)
+        if form.profile.data:
+            profileimage = form.profile.data
+            try:
+                filename = courseprofiles.save(profileimage, name='course_'+str(current_user.id)+'_'+form.profile.data.filename)
+            except UploadNotAllowed:
+                flash('The upload was not allowed.', category='warning')
+            else:
+                course.profileimg='courseprofiles/'+filename
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('course.get_course', id=id))

@@ -61,6 +61,7 @@ class ModuleForm(FlaskForm):
     module_name=StringField('Module Name', validators=[DataRequired()])
 
 class CourseForm(FlaskForm):
+    profile = FileField('File')
     title = StringField('Title', validators=[DataRequired()])
     outline = TextAreaField('Course Description', validators=[
         DataRequired(), Length(min=1, max=140)])

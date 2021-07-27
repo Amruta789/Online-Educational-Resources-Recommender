@@ -1,6 +1,10 @@
 <div class="col">
     <div class="card h-100" style="width: 15rem;">
-        <img src="{{ course.avatar(10) }}" class="card-img-top" alt="...">
+        {% if course.profileimg %}
+            <img src="{{ url_for('get_file',filename=course.profileimg) }}" class="card-img-top" alt="...">
+        {% else %}
+            <img src="{{ course.avatar(5) }}" class="card-img-top" alt="...">
+        {% endif %}
         <div class="card-body">
           <h5 class="card-title"><a class="text-decoration-none" href="{{ url_for('course.get_course',id=course.id)}}">{{ course.title }}</a></h5>
           <p class="card-text">by <a href="{{ url_for('user.userprofile',username=course.lecturer.username)}}">{{ course.lecturer.username }}</a></p>

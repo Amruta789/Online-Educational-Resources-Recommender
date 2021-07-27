@@ -7,6 +7,7 @@ Created on Sat Apr 24 16:39:20 2021
 import os
 
 import flask
+from flask import send_from_directory
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -46,6 +47,10 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
+
+    @app.route('/uploads/<path:filename>')
+    def get_file(filename):
+        return send_from_directory(app.config['UPLOADS_DEFAULT_DEST'],filename)
     
     from . import models
     db.init_app(app)
@@ -53,7 +58,8 @@ def create_app(test_config=None):
     login.init_app(app)
     mail.init_app(app)
     from .user import profilephotos
-    configure_uploads(app,profilephotos)
+    from .course import courseprofiles
+    configure_uploads(app,(profilephotos,courseprofiles))
 
     from . import auth
     app.register_blueprint(auth.bp)

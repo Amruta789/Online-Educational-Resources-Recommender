@@ -3,7 +3,11 @@
 <article class="post">
     <div class="d-flex">
         <div class="flex-shrink-0">
-            <img src="{{ course.avatar(128) }}">
+            {% if course.profileimg %}
+                <img src="{{ url_for('get_file',filename=course.profileimg) }}" width="128" height="128" alt="...">
+            {% else %}
+                <img src="{{ course.avatar(128) }}" class="card-img-top" alt="...">
+            {% endif %}
         </div>
         <div class="flex-grow-1 ms-3">
             <div>
