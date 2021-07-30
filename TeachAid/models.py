@@ -76,16 +76,14 @@ class Module(db.Model):
     module_name = db.Column(db.String(140))
     course = db.relationship('Course', backref=db.backref('modules', lazy='dynamic', collection_class=list))
 
-class YouTubeContent(db.Model):
+class Content(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150))
     description = db.Column(db.String(240))
     url=db.Column(db.String(140))
-    channel_title=db.Column(db.String(140))
-    channel_url=db.Column(db.String(140))
-    image_url=db.Column(db.String(100))
+    file_path=db.Column(db.String(100))
     module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
-    module = db.relationship('Module', backref=db.backref('youtube_content',lazy='dynamic', collection_class=list))
+    module = db.relationship('Module', backref=db.backref('content',lazy='dynamic', collection_class=list))
     
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)

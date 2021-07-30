@@ -11,13 +11,13 @@ from werkzeug.exceptions import abort
 
 from flask_login import login_required, current_user
 from TeachAid.models import Course, Module
-from TeachAid.forms import CourseForm, EmptyForm, ModuleForm, SearchForm
+from TeachAid.forms import CourseForm, EmptyForm, ModuleForm, SearchForm, ContentForm
 from TeachAid import db
 from flask_uploads import UploadSet, IMAGES, UploadNotAllowed
 
 bp = Blueprint('course', __name__)
 
-courseprofiles = UploadSet('courseprofiles', IMAGES)
+courseprofiles = UploadSet('courseprofiles', IMAGES+('jfif','tif','tiff'))
 
 @bp.before_app_request
 def before_request():
@@ -63,7 +63,7 @@ def create():
         if form.profile.data:
             profileimage = form.profile.data
             try:
-                filename = courseprofiles.save(profileimage, name='course_'+str(current_user.id)+'_'+form.profile.data.filename)
+                filename = courseprofiles.save(profileimage, name='course_'+str(course.id)+'_'+form.profile.data.filename)
             except UploadNotAllowed:
                 flash('The upload was not allowed.', category='warning')
             else:
@@ -78,11 +78,12 @@ def create():
 @login_required
 def get_course(id):
     form=EmptyForm()
+    content_form=ContentForm()
     course = Course.query.filter_by(id=id).first()
     if course is None:
           flash('Course not found.')
           return redirect(url_for('index'))    
-    return render_template('course/course.html', course=course, form=form)
+    return render_template('course/course.html', course=course, form=form, content_form=content_form)
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required

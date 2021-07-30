@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
+from wtforms.fields.html5 import URLField, SearchField
 from wtforms.fields.core import FieldList, FormField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from TeachAid.models import User
 from flask import request
 
 class SearchForm(FlaskForm):
-    q = StringField('Search', validators=[DataRequired()])
+    q = SearchField('Search Courses', validators=[DataRequired()])
     def __init__(self, *args, **kwargs):
         if 'formdata' not in kwargs:
             kwargs['formdata'] = request.args
@@ -53,6 +54,13 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username.')
 
 class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
+
+class ContentForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description=TextAreaField('Content Description', validators=[Length(max=500)])
+    url = URLField('Enter any URL')
+    file = FileField('Upload any files')
     submit = SubmitField('Submit')
 
 class ModuleForm(FlaskForm):

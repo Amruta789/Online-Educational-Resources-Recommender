@@ -59,7 +59,8 @@ def create_app(test_config=None):
     mail.init_app(app)
     from .user import profilephotos
     from .course import courseprofiles
-    configure_uploads(app,(profilephotos,courseprofiles))
+    from .content import coursecontents
+    configure_uploads(app,(profilephotos,courseprofiles,coursecontents))
 
     from . import auth
     app.register_blueprint(auth.bp)
@@ -72,6 +73,9 @@ def create_app(test_config=None):
 
     from . import user
     app.register_blueprint(user.bp)
+
+    from . import content
+    app.register_blueprint(content.bp)
     app.add_url_rule('/', endpoint='index')
 
     return app
