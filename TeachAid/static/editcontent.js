@@ -15,10 +15,3 @@ function getFormData(contentid) {
         })
     })
 }
-
-function displayIcon() {
-    if($("#filename").attr("href").match(/\.(pdf|epub)$/i)){
-        $(".bi-file-earmark").addClass("bi-file-earmark-pdf-fill").removeClass("bi-file-earmark")
-    }
-}
-$(document).ready(displayIcon)

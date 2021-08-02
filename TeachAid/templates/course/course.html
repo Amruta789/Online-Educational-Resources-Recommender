@@ -164,7 +164,11 @@
                             <a href="{{ content.url }}">{{ content.url }}</a>
                             {% endif %}
                             {% if content.file_path %}
-                            </i><a id="filename" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/')[1] }}</a> <i id="fileicon" class="bi bi-file-earmark"></i>
+                                {% if content.file_path.split('.')[1] == 'pdf' %}          
+                                    <a href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/')[1] }}</a> <i class="bi bi-file-earmark-pdf-fill"></i>
+                                {% else %}
+                                    <a href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/')[1] }}</a> <i class="bi bi-file-earmark"></i>
+                                {% endif %}
                             {% endif%}
                         </div>
                     {% endfor %}
