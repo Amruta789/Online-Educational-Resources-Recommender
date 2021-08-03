@@ -22,7 +22,8 @@ def youtube_search(keyword, developer_key):
         maxResults=30,
         safeSearch='strict',
         topicId='/m/01k8wb',
-        relevanceLanguage='EN'
+        relevanceLanguage='EN',
+        videoLicense='creativeCommon'
     ).execute()
     youtube_recommendations = []
     urlvideo='https://www.youtube.com/watch?v='
@@ -54,7 +55,8 @@ def google_search(keyword, startIndex, developer_key):
         cx='54b0e5c669679dac6',
         start=startIndex,
         fields='items(link,snippet,title, pagemap/cse_image)',
-        safe='high'
+        safe='high',
+        rights='cc_publicdomain, cc_attribute, cc_sharealike, cc_noncommercial, cc_nonderived'
         ).execute()
     google_recommendations=[]
     for search_result in search_response.get('items',[]):
@@ -88,9 +90,3 @@ def get_recommendations(id):
         flash('Google results not found')
         return redirect(url_for('index'))
     return render_template('search/moduleresults.html', google_recommendations=google_recommendations, youtube_recommendations=youtube_recommendations, module=module) 
-
-@bp.route('/<int:id>/addToModule',methods=('GET','POST'))
-@login_required
-def add_youtube_content(id):
-    module=Module.query.filter_by(id=id).first()
-    course=Course.query.filter_by(id=module.course_id).first()
