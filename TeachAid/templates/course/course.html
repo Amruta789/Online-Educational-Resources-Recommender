@@ -23,6 +23,15 @@
                 {% if current_user.is_authenticated %}
                     {% if current_user.id == course['lecturer_id'] %}
                         <a class="btn btn-info btn-sm" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
+                        {% if course.hidden %}
+                            <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                                <button class="btn btn-secondary" type="submit">Show</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                                <button class="btn btn-secondary" type="submit">Hide</button>
+                            </form>
+                        {% endif %}
                     {% elif not current_user.is_learning(course) %}
                         <form action="{{ url_for('user.learn', courseid=course['id']) }}" method="post">
                             {{ form.hidden_tag() }}
@@ -102,75 +111,84 @@
             <div>
                 {% if module.content %}
                     {% for content in module.content %}
-                        <div>
-                            <p style="color:blue;">{{ content.title }}</p>
-                            {% if current_user.id == course.lecturer_id %}
-                                <button type="button" class="btn btn-primary" onclick="getFormData( {{ content.id }} );"
-                                data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
-                                    Edit Content
-                                </button>
-                                <div class="modal fade" id="editContentModal{{content.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form id="editContentForm{{content.id}}" action="{{ url_for('content.update', contentid=content.id) }}" method="post" enctype="multipart/form-data">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="newContentModalLabel">Edit content for {{ content.title }}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {{ content_form.hidden_tag() }}
-                                                    <p>
-                                                        {{ content_form.title.label }}<br>
-                                                        {{ content_form.title(size=32) }}<br>
-                                                        {% for error in content_form.title.errors %}
-                                                        <span style="color: red;">[{{ error }}]</span>
-                                                        {% endfor %}
-                                                    </p>
-                                                    <p>
-                                                        {{ content_form.description.label }}<br>
-                                                        {{ content_form.description(cols=50, rows=4) }}<br>
-                                                        {% for error in content_form.description.errors %}
-                                                        <span style="color: red;">[{{ error }}]</span>
-                                                        {% endfor %}
-                                                    </p>
-                                                    <p>
-                                                        {{ content_form.url.label }}<br>
-                                                        {{ content_form.url(size=32) }}<br>
-                                                        {% for error in content_form.url.errors %}
-                                                        <span style="color: red;">[{{ error }}]</span>
-                                                        {% endfor %}
-                                                    </p>
-                                                    <p>
-                                                        {{ content_form.file.label }}
-                                                        {{ content_form.file }}<br>
-                                                        {% for error in content_form.file.errors %}
-                                                        <span style="color: red;">[{{ error }}]</span>
-                                                        {% endfor %}
-                                                    </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                </div>
-                                            </form>
+                        {% if not content.hidden %}
+                            <div>
+                                <p style="color:blue;">{{ content.title }}</p>
+                                {% if current_user.id == course.lecturer_id %}
+                                    <button type="button" class="btn btn-primary" onclick="getFormData( {{ content.id }} );"
+                                    data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
+                                        Edit Content
+                                    </button>
+                                    <div class="modal fade" id="editContentModal{{content.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="newContentModalLabel">Edit content for {{ content.title }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="editContentForm{{content.id}}" action="{{ url_for('content.update', contentid=content.id) }}" method="post" enctype="multipart/form-data">
+                                                            {{ content_form.hidden_tag() }}
+                                                            <p>
+                                                                {{ content_form.title.label }}<br>
+                                                                {{ content_form.title(size=32) }}<br>
+                                                                {% for error in content_form.title.errors %}
+                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                            <p>
+                                                                {{ content_form.description.label }}<br>
+                                                                {{ content_form.description(cols=50, rows=4) }}<br>
+                                                                {% for error in content_form.description.errors %}
+                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                            <p>
+                                                                {{ content_form.url.label }}<br>
+                                                                {{ content_form.url(size=32) }}<br>
+                                                                {% for error in content_form.url.errors %}
+                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                            <p>
+                                                                {{ content_form.file.label }}
+                                                                {{ content_form.file }}<br>
+                                                                {% for error in content_form.file.errors %}
+                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                        <form action="{{ url_for('content.delete_content', id=content.id) }}" method="post"> 
+                                                            <input class="btn btn-danger" type="submit" value="Delete Content" onclick="return confirm('Are you sure?');">
+                                                        </form>
+                                                    </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endif %}
-                            {% if content.description %}
-                                <p>{{ content.description }}</p>
-                            {% endif %}
-                            {% if content.url %}
-                            <a href="{{ content.url }}">{{ content.url }}</a>
-                            {% endif %}
-                            {% if content.file_path %}
-                                {% if content.file_path.split('.')[1] == 'pdf' %}          
-                                    <a href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/')[1] }}</a> <i class="bi bi-file-earmark-pdf-fill"></i>
-                                {% else %}
-                                    <a href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/')[1] }}</a> <i class="bi bi-file-earmark"></i>
                                 {% endif %}
-                            {% endif%}
-                        </div>
+                                {% if content.description %}
+                                    <p>{{ content.description }}</p>
+                                {% endif %}
+                                {% if content.url %}
+                                <a href="{{ content.url }}">{{ content.url }}</a>
+                                {% endif %}
+                                {% if content.file_path %}
+                                    {% if content.file_path.split('.').pop() == 'pdf' %}          
+                                        <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
+                                        <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill"></i>
+                                        <button id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})">Delete file</button>
+                                    {% else %}
+                                        <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
+                                        <i id="fileicon{{ content.id }}" class="bi bi-file-earmark"></i>
+                                        <button id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})">Delete file</button>
+                                    {% endif %}
+                                {% endif%}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             </div>

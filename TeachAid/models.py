@@ -60,12 +60,15 @@ class Course(SearchableMixin, db.Model):
     outline = db.Column(db.String(240))
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     profileimg = db.Column(db.String(100))
+    hidden = db.Column(db.Boolean, default=False)
     lecturer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def avatar(self, size):
         digest = self.id
+        width=3*size
+        height=2*size
         return 'https://avatars.dicebear.com/api/jdenticon/{}.svg?w={}&h={}'.format(
-            digest, size, size)
+            digest, width, height)
 
     def __repr__(self):
         return '<Course {}>'.format(self.title)
@@ -82,6 +85,7 @@ class Content(db.Model):
     description = db.Column(db.String(240))
     url=db.Column(db.String(140))
     file_path=db.Column(db.String(100))
+    hidden = db.Column(db.Boolean, default=False)
     module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
     module = db.relationship('Module', backref=db.backref('content',lazy='dynamic', collection_class=list))
     

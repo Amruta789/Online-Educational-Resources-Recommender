@@ -76,11 +76,23 @@ def update(contentid):
             result['url']= content.url 
     return jsonify(result)
 
-@bp.route('/<int:id>/delete', methods=('POST',))
+@bp.route('/<int:id>/deletefile', methods=('POST',))
 @login_required
-def delete(id):
+def delete_file(id):
     content = Content.query.filter_by(id=id).first()
-    db.session.delete(content)
+    if content.file_path:
+        content.file_path=None
+    db.session.commit()
+    flash('This file has been deleted')
+    return '', 200
+
+@bp.route('/<int:id>/deletecontent', methods=('POST',))
+@login_required
+def delete_content(id):
+    content = Content.query.filter_by(id=id).first()
+    module = Module.query.filter_by(id=content.module_id).first()
+    if not content.hidden:
+        content.hidden=True
     db.session.commit()
     flash('This content has been deleted')
-    return redirect(url_for('index'))
+    return redirect(url_for('course.get_course',id=module.course_id))

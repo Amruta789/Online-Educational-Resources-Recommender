@@ -15,3 +15,11 @@ function getFormData(contentid) {
         })
     })
 }
+
+function deleteFile(contentid) {
+    $.post('/'+contentid+'/deletefile',{id: contentid},  ()=> {
+        $('#filename'+contentid).hide()
+        $('#fileicon'+contentid).hide()
+        $('#filedelete'+contentid).hide()
+    })
+}

@@ -7,7 +7,9 @@
 {% block content %}
     <div class="row row-cols-1 row-cols-md-5 g-4">
         {% for course in courses %}
-            {% include '_card.html' %}
+            {% if not course.hidden %}
+                {% include '_card.html' %}
+            {% endif %}
         {% endfor %}
     </div>  
     {% if prev_url %}

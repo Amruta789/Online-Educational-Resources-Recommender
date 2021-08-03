@@ -123,6 +123,20 @@ def update(id):
             form.modules.append_entry(module)
     return render_template('course/update.html', course=course, form=form, _template=template_form)
 
+@bp.route('/<int:id>/togglecourse', methods=('POST',))
+@login_required
+def showhide(id):
+    course = Course.query.filter_by(id=id).first()
+    if not course.hidden:
+        course.hidden=True
+        db.session.commit()
+        flash('This course is hidden from public')
+    else:
+        course.hidden=False
+        db.session.commit()
+        flash('This course is live again')
+    return redirect(url_for('index'))
+
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
