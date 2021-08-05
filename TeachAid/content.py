@@ -12,7 +12,7 @@ from flask_uploads import UploadSet, DEFAULTS, UploadNotAllowed
 bp = Blueprint('content', __name__)
 # DEFAULTS contains ('txt', 'rtf', 'odf', 'ods', 'gnumeric', 'abw', 'doc', 'docx', 
 # 'xls', 'xlsx', 'jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'csv', 'ini', 'json', 'plist', 'xml', 'yaml', 'yml')
-coursecontents = UploadSet('coursecontents', DEFAULTS+('pdf','jfif','odt','mp4','webm'))
+coursecontents = UploadSet('coursecontents', DEFAULTS+('pptx','odp','ppt','pdf','jfif','odt','mp4','webm', 'wav','mp3'))
 
 @bp.route('/<int:moduleid>/createcontent', methods=('POST',))
 @login_required
@@ -55,7 +55,7 @@ def update(contentid):
         if form.description.data:
             content.description = form.description.data
         if form.url.data:
-            content.url = form.description.url
+            content.url = form.url.data
         if form.file.data:
             fileuploaded=form.file.data
             try:

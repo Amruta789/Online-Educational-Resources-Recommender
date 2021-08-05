@@ -117,6 +117,9 @@
                                     data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
                                         Edit Content
                                     </button>
+                                    <form action="{{ url_for('content.delete_content', id=content.id) }}" method="post"> 
+                                        <input class="btn btn-danger" type="submit" value="Delete Content" onclick="return confirm('Are you sure?');">
+                                    </form>
                                     <div class="modal fade" id="editContentModal{{content.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -160,9 +163,6 @@
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                                         </form>
-                                                        <form action="{{ url_for('content.delete_content', id=content.id) }}" method="post"> 
-                                                            <input class="btn btn-danger" type="submit" value="Delete Content" onclick="return confirm('Are you sure?');">
-                                                        </form>
                                                     </div>
                                             </div>
                                         </div>
@@ -175,11 +175,29 @@
                                 <a href="{{ content.url }}">{{ content.url }}</a>
                                 {% endif %}
                                 {% if content.file_path %}
-                                    <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
-                                    {% if content.file_path.split('.').pop() == 'pdf' %}          
-                                        <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill"></i>
+                                    {% if content.file_path.split('.').pop() in ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp','jfif'] %}
+                                        <img id="filename{{ content.id }}" src="{{ url_for('get_file',filename=content.file_path) }}" width="320" height="240" alt="Uploaded picture for {{ content.title }}">
+                                    {% elif content.file_path.split('.').pop() in ['mp4','webm'] %}
+                                        <video id="filename{{ content.id }}" width="320" height="240" controls>
+                                            <source src="{{ url_for('get_file',filename=content.file_path) }}">                                            
+                                        </video>
                                     {% else %}
-                                        <i id="fileicon{{ content.id }}" class="bi bi-file-earmark"></i>
+                                        <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
+                                        {% if content.file_path.split('.').pop() == 'pdf' %}          
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill"></i>
+                                        {% elif content.file_path.split('.').pop() in ['ods','xlsx','csv'] %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-spreadsheet"></i>
+                                        {% elif content.file_path.split('.').pop() in ['odp','pptx','ppt'] %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-slides"></i>
+                                        {% elif content.file_path.split('.').pop() in ['doc','docx','odt','odf','txt'] %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-text"></i>
+                                        {% elif content.file_path.split('.').pop() == 'rtf' %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-richtext"></i>
+                                        {% elif content.file_path.split('.').pop() in ['mp3','wav'] %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-music"></i>
+                                        {% else %}
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark"></i>
+                                        {% endif %}
                                     {% endif %}
                                     {% if current_user.id == course.lecturer_id %}
                                         <button class="btn btn-outline-secondary" id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})"><i class="bi bi-trash" ></i></button>

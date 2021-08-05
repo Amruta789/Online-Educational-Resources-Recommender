@@ -19,7 +19,9 @@ function getFormData(contentid) {
 function deleteFile(contentid) {
     $.post('/'+contentid+'/deletefile',{id: contentid},  ()=> {
         $('#filename'+contentid).hide()
-        $('#fileicon'+contentid).hide()
+        if($('#fileicon'+contentid).length !== 0){
+            $('#fileicon'+contentid).hide()
+        }            
         $('#filedelete'+contentid).hide()
     })
 }
