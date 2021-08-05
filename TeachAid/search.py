@@ -23,6 +23,7 @@ def youtube_search(keyword, developer_key):
         safeSearch='strict',
         topicId='/m/01k8wb',
         relevanceLanguage='EN',
+        type='video',
         videoLicense='creativeCommon'
     ).execute()
     youtube_recommendations = []

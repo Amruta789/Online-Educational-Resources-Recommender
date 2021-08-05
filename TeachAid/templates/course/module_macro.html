@@ -1,9 +1,12 @@
 {%- macro render_module_form(subform, index) %}
     <div id="module-{{ index }}-form" class="{% if index != '_' %}subform{% else %}is-hidden{% endif %}" data-index="{{ index }}">
-        <div>
-            {{ subform.module_name.label }}
-            {{ subform.module_name }}
+        <div class="mb-3">
+            {{ subform.module_name.label(class_='form-label') }}
+            <div class="input-group">
+                {{ subform.module_name(class_='form-control') }}
+                <button class="btn btn-outline-secondary"><i class="remove bi bi-trash" ></i></button>
+            </div>
+            
         </div>
-        <a class="remove" href="#">Remove</a>
     </div>
 {%- endmacro %}

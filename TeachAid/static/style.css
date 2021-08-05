@@ -34,7 +34,7 @@ hr {
 }
 
 nav {
-  background: lightgray;
+  /* background: lightgray; */
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
@@ -143,4 +143,16 @@ input[type=submit] {
 
 .gcse-searchresults{
   box-sizing: content-box;
+}
+
+.form-container{
+  display: flex;
+  align-items: center;
+}
+
+.form-signin{
+  width: 100%;
+  max-width: 390px;
+  padding: 15px;
+  margin: auto;
 }

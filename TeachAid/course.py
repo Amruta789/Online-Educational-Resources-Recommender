@@ -39,6 +39,7 @@ def index():
 @bp.route('/search')
 @login_required
 def search():
+    form=EmptyForm()
     if not g.search_form.validate():
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
@@ -47,7 +48,7 @@ def search():
         if total > page * current_app.config['COURSES_PER_PAGE'] else None
     prev_url = url_for('course.search', q=g.search_form.q.data, page=page - 1) \
         if page > 1 else None
-    return render_template('course/search.html', title='Search', courses=courses,
+    return render_template('course/search.html', title='Search', courses=courses, form=form,
                            next_url=next_url, prev_url=prev_url)
 
 @bp.route('/create', methods=('GET', 'POST'))

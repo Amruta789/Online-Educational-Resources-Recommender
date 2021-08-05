@@ -12,7 +12,7 @@ from flask_uploads import UploadSet, DEFAULTS, UploadNotAllowed
 bp = Blueprint('content', __name__)
 # DEFAULTS contains ('txt', 'rtf', 'odf', 'ods', 'gnumeric', 'abw', 'doc', 'docx', 
 # 'xls', 'xlsx', 'jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'csv', 'ini', 'json', 'plist', 'xml', 'yaml', 'yml')
-coursecontents = UploadSet('coursecontents', DEFAULTS+('pdf','jfif','odt'))
+coursecontents = UploadSet('coursecontents', DEFAULTS+('pdf','jfif','odt','mp4','webm'))
 
 @bp.route('/<int:moduleid>/createcontent', methods=('POST',))
 @login_required

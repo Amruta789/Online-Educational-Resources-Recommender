@@ -5,35 +5,33 @@
   <script src="{{ url_for('static', filename='modulesform.js') }}"></script>
 {% endblock %}
 
-{% block header %}
-  <h1>{% block title %}New Course{% endblock %}</h1>
-{% endblock %}
-
 {% block content %}
+<div class="form-signin" style="max-width: 1000px;">
+  <h1>New Course</h1>
   <form action="" method="post" enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
-      <p>
-        <label>Course Profile Picture</label>
-        {{ form.profile }}<br>
-        {% for error in form.profile.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      <label for="profile" class="form-label">Course Profile Image</label>
+      {{ form.profile(class_='form-control') }}
+      {% for error in form.profile.errors %}
+      <span style="color: red;">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.title.label(class_='form-label') }}<br>
+        {{ form.title(class_='form-control') }}<br>
+        {% for error in form.title.errors %}
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
-      </p>
-      <p>
-          {{ form.title.label }}<br>
-          {{ form.title(size=32) }}<br>
-          {% for error in form.title.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-      </p>
-      <p>
-          {{ form.outline.label }}<br>
-          {{ form.outline(size=32, rows=4) }}<br>
-          {% for error in form.outline.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-      </p>
-      <a id="add" href="#">Add Module</a>
+    </div>
+    <div class="mb-3">
+        {{ form.outline.label(class_='form-label') }}<br>
+        {{ form.outline(class_='form-control') }}<br>
+        {% for error in form.outline.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <h3>Add module headings</h3>
       {# Show all subforms #}
       <div id="subforms-container">
           {% for subform in form.modules %}
@@ -45,7 +43,9 @@
       {% endfor %}
       {# Form template #}
       {{ macros.render_module_form(_template, '_') }}
-
-      <p>{{ form.submit() }}</p>
+      <div class="mb-3">
+        <button id="add" type="button" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Add Module</button>
+      </div>
+    <div>{{ form.submit(class_='btn btn-primary') }}</div>
   </form>
 {% endblock %}

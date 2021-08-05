@@ -10,18 +10,19 @@
           <p class="card-text">by <a href="{{ url_for('user.userprofile',username=course.lecturer.username)}}">{{ course.lecturer.username }}</a></p>
           {% if current_user.is_authenticated %}
                 {% if current_user.id == course.lecturer_id %}
-                    <a class="btn btn-info" href="{{ url_for('course.update', id=course.id) }}">Edit</a>
                     {% if course.hidden %}
                         <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                            <a class="btn btn-info" href="{{ url_for('course.update', id=course.id) }}">Edit</a>
                             <button class="btn btn-secondary" type="submit">Show</button>
                         </form>
                     {% else %}
                         <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                            <a class="btn btn-info" href="{{ url_for('course.update', id=course.id) }}">Edit</a>
                             <button class="btn btn-secondary" type="submit">Hide</button>
                         </form>
                     {% endif %}
                 {% elif not current_user.is_learning(course) %}
-                <form action="{{ url_for('user.learn', courseid=courseid) }}" method="post">
+                <form action="{{ url_for('user.learn', courseid=course.id) }}" method="post">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Learn', class_='btn btn-primary') }}
                 </form>

@@ -10,11 +10,11 @@
             {% if course.profileimg %}
                 <img src="{{ url_for('get_file',filename=course.profileimg) }}" width="128" height="128" alt="...">
             {% else %}
-                <img src="{{ course.avatar(128) }}" class="card-img-top" alt="...">
+                <img src="{{ course.avatar(128) }}" alt="...">
             {% endif %}
         </div>
         <div class="flex-grow-1 ms-3">
-            <div>
+            <div class="mb-3">
                 <h1>{{ course['title'] }}</h1>
                 <div class="about">by <a href="{{ url_for('user.userprofile',username=course.lecturer.username)}}">{{ course.lecturer.username }}</a> 
                 on {{ course['created'].strftime('%Y-%m-%d') }}</div>
@@ -22,16 +22,14 @@
             <div>
                 {% if current_user.is_authenticated %}
                     {% if current_user.id == course['lecturer_id'] %}
-                        <a class="btn btn-info btn-sm" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
-                        {% if course.hidden %}
-                            <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                        <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                            <a class="btn btn-info" href="{{ url_for('course.update', id=course['id']) }}">Edit</a>
+                            {% if course.hidden %}
                                 <button class="btn btn-secondary" type="submit">Show</button>
-                            </form>
-                        {% else %}
-                            <form action="{{ url_for('course.showhide', id=course.id) }}" method="post"> 
+                            {% else %}
                                 <button class="btn btn-secondary" type="submit">Hide</button>
-                            </form>
-                        {% endif %}
+                            {% endif %}
+                        </form>     
                     {% elif not current_user.is_learning(course) %}
                         <form action="{{ url_for('user.learn', courseid=course['id']) }}" method="post">
                             {{ form.hidden_tag() }}
@@ -53,7 +51,7 @@
     <div>
         {% for module in course.modules %}
             <div>
-                <h5>{{ module.module_name }}</h5> 
+                <h4>{{ module.module_name }}</h4> 
                 {% if current_user.id == course.lecturer_id %}
                     <a href="{{ url_for('search.get_recommendations', id=module.id)}}"> See Recommendations</a>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newContentModal{{module.id}}">
@@ -69,34 +67,34 @@
                                     </div>
                                     <div class="modal-body">
                                         {{ content_form.hidden_tag() }}
-                                        <p>
-                                            {{ content_form.title.label }}<br>
-                                            {{ content_form.title(size=32) }}<br>
+                                        <div>
+                                            {{ content_form.title.label(class_='form-label') }}<br>
+                                            {{ content_form.title(class_='form-control') }}<br>
                                             {% for error in content_form.title.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span style="color: red;">{{ error }}</span>
                                             {% endfor %}
-                                        </p>
-                                        <p>
-                                            {{ content_form.description.label }}<br>
-                                            {{ content_form.description(cols=50, rows=4) }}<br>
+                                        </div>
+                                        <div>
+                                            {{ content_form.description.label(class_='form-label') }}<br>
+                                            {{ content_form.description(class_='form-control') }}<br>
                                             {% for error in content_form.description.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span style="color: red;">{{ error }}</span>
                                             {% endfor %}
-                                        </p>
-                                        <p>
-                                            {{ content_form.url.label }}<br>
-                                            {{ content_form.url(size=32) }}<br>
+                                        </div>
+                                        <div>
+                                            {{ content_form.url.label(class_='form-label') }}<br>
+                                            {{ content_form.url(class_='form-control') }}<br>
                                             {% for error in content_form.url.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span style="color: red;">{{ error }}</span>
                                             {% endfor %}
-                                        </p>
-                                        <p>
-                                            {{ content_form.file.label }}
-                                            {{ content_form.file }}<br>
+                                        </div>
+                                        <div>
+                                            {{ content_form.file.label(class_='form-label') }}
+                                            {{ content_form.file(class_='form-control') }}<br>
                                             {% for error in content_form.file.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span style="color: red;">{{ error }}</span>
                                             {% endfor %}
-                                        </p>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -113,7 +111,7 @@
                     {% for content in module.content %}
                         {% if not content.hidden %}
                             <div>
-                                <p style="color:blue;">{{ content.title }}</p>
+                                <h5 style="color:black;">{{ content.title }}</h5>
                                 {% if current_user.id == course.lecturer_id %}
                                     <button type="button" class="btn btn-primary" onclick="getFormData( {{ content.id }} );"
                                     data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
@@ -129,34 +127,34 @@
                                                     <div class="modal-body">
                                                         <form id="editContentForm{{content.id}}" action="{{ url_for('content.update', contentid=content.id) }}" method="post" enctype="multipart/form-data">
                                                             {{ content_form.hidden_tag() }}
-                                                            <p>
-                                                                {{ content_form.title.label }}<br>
-                                                                {{ content_form.title(size=32) }}<br>
+                                                            <div>
+                                                                {{ content_form.title.label(class_='form-label') }}<br>
+                                                                {{ content_form.title(class_='form-control') }}<br>
                                                                 {% for error in content_form.title.errors %}
-                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                <span style="color: red;">{{ error }}</span>
                                                                 {% endfor %}
-                                                            </p>
-                                                            <p>
-                                                                {{ content_form.description.label }}<br>
-                                                                {{ content_form.description(cols=50, rows=4) }}<br>
+                                                            </div>
+                                                            <div>
+                                                                {{ content_form.description.label(class_='form-label') }}<br>
+                                                                {{ content_form.description(class_='form-control') }}<br>
                                                                 {% for error in content_form.description.errors %}
-                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                <span style="color: red;">{{ error }}</span>
                                                                 {% endfor %}
-                                                            </p>
-                                                            <p>
-                                                                {{ content_form.url.label }}<br>
-                                                                {{ content_form.url(size=32) }}<br>
+                                                            </div>
+                                                            <div>
+                                                                {{ content_form.url.label(class_='form-label') }}<br>
+                                                                {{ content_form.url(class_='form-control') }}<br>
                                                                 {% for error in content_form.url.errors %}
-                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                <span style="color: red;">{{ error }}</span>
                                                                 {% endfor %}
-                                                            </p>
-                                                            <p>
-                                                                {{ content_form.file.label }}
-                                                                {{ content_form.file }}<br>
+                                                            </div>
+                                                            <div>
+                                                                {{ content_form.file.label(class_='form-label') }}
+                                                                {{ content_form.file(class_='form-control') }}<br>
                                                                 {% for error in content_form.file.errors %}
-                                                                <span style="color: red;">[{{ error }}]</span>
+                                                                <span style="color: red;">{{ error }}</span>
                                                                 {% endfor %}
-                                                            </p>
+                                                            </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -177,14 +175,14 @@
                                 <a href="{{ content.url }}">{{ content.url }}</a>
                                 {% endif %}
                                 {% if content.file_path %}
+                                    <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
                                     {% if content.file_path.split('.').pop() == 'pdf' %}          
-                                        <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
                                         <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill"></i>
-                                        <button id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})">Delete file</button>
                                     {% else %}
-                                        <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
                                         <i id="fileicon{{ content.id }}" class="bi bi-file-earmark"></i>
-                                        <button id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})">Delete file</button>
+                                    {% endif %}
+                                    {% if current_user.id == course.lecturer_id %}
+                                        <button class="btn btn-outline-secondary" id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})"><i class="bi bi-trash" ></i></button>
                                     {% endif %}
                                 {% endif%}
                             </div>
