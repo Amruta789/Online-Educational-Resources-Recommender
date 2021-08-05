@@ -156,3 +156,7 @@ input[type=submit] {
   padding: 15px;
   margin: auto;
 }
+
+.icon-size{
+  font-size: 5rem;
+}

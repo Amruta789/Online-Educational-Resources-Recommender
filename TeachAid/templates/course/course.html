@@ -184,19 +184,19 @@
                                     {% else %}
                                         <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
                                         {% if content.file_path.split('.').pop() == 'pdf' %}          
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill icon-size"></i>
                                         {% elif content.file_path.split('.').pop() in ['ods','xlsx','csv'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-spreadsheet"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-spreadsheet icon-size"></i>
                                         {% elif content.file_path.split('.').pop() in ['odp','pptx','ppt'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-slides"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-slides icon-size"></i>
                                         {% elif content.file_path.split('.').pop() in ['doc','docx','odt','odf','txt'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-text"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-text icon-size"></i>
                                         {% elif content.file_path.split('.').pop() == 'rtf' %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-richtext"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-richtext icon-size"></i>
                                         {% elif content.file_path.split('.').pop() in ['mp3','wav'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-music"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-music icon-size"></i>
                                         {% else %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark"></i>
+                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark icon-size"></i>
                                         {% endif %}
                                     {% endif %}
                                     {% if current_user.id == course.lecturer_id %}
