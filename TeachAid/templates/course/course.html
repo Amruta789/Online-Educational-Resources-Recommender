@@ -48,15 +48,17 @@
     <hr>   
     <p class="body">{{ course['outline'] }}</p>
     <h3>Modules</h3>
-    <div>
+    <div style="margin-left: 30px;">
         {% for module in course.modules %}
-            <div>
+            <div class="d-flex justify-content-between align-items-center">
                 <h4>{{ module.module_name }}</h4> 
                 {% if current_user.id == course.lecturer_id %}
-                    <a href="{{ url_for('search.get_recommendations', id=module.id)}}"> See Recommendations</a>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newContentModal{{module.id}}">
-                        New
-                    </button>
+                    <div>
+                        <a href="{{ url_for('search.get_recommendations', id=module.id)}}"> See Recommendations</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newContentModal{{module.id}}">
+                            New
+                        </button>
+                    </div>
                     <div class="modal fade" id="newContentModal{{module.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -110,19 +112,22 @@
                 {% if module.content %}
                     {% for content in module.content %}
                         {% if not content.hidden %}
-                            <div>
-                                <h5 style="color:black;">{{ content.title }}</h5>
-                                {% if current_user.id == course.lecturer_id %}
-                                    <button type="button" class="btn btn-primary" onclick="getFormData( {{ content.id }} );"
-                                    data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
-                                        Edit Content
-                                    </button>
-                                    <form action="{{ url_for('content.delete_content', id=content.id) }}" method="post"> 
-                                        <input class="btn btn-danger" type="submit" value="Delete Content" onclick="return confirm('Are you sure?');">
-                                    </form>
-                                    <div class="modal fade" id="editContentModal{{content.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
+                            <div style="margin-left: 30px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 style="color:black;">{{ content.title }}</h5>
+                                    {% if current_user.id == course.lecturer_id %}
+                                        <div>
+                                            <form action="{{ url_for('content.delete_content', id=content.id) }}" method="post">
+                                                <button type="button" class="btn btn-outline-primary" onclick="getFormData( {{ content.id }} );"
+                                                data-bs-toggle="modal" data-bs-target="#editContentModal{{content.id}}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button> 
+                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?');"><i class="bi bi-trash" ></i></button>
+                                            </form>
+                                        </div>   
+                                        <div class="modal fade" id="editContentModal{{content.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="newContentModalLabel">Edit content for {{ content.title }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -152,7 +157,7 @@
                                                                 {% endfor %}
                                                             </div>
                                                             <div>
-                                                                {{ content_form.file.label(class_='form-label') }}
+                                                                <label class="form-label">Change file</label>
                                                                 {{ content_form.file(class_='form-control') }}<br>
                                                                 {% for error in content_form.file.errors %}
                                                                 <span style="color: red;">{{ error }}</span>
@@ -164,15 +169,18 @@
                                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                                         </form>
                                                     </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                                 {% if content.description %}
                                     <p>{{ content.description }}</p>
                                 {% endif %}
                                 {% if content.url %}
-                                <a href="{{ content.url }}">{{ content.url }}</a>
+                                <div>
+                                    <a href="{{ content.url }}">{{ content.url }}</a>
+                                </div>
                                 {% endif %}
                                 {% if content.file_path %}
                                     {% if content.file_path.split('.').pop() in ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp','jfif'] %}
@@ -182,22 +190,24 @@
                                             <source src="{{ url_for('get_file',filename=content.file_path) }}">                                            
                                         </video>
                                     {% else %}
+                                        <div>
+                                            {% if content.file_path.split('.').pop() == 'pdf' %}          
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill icon-size"></i>
+                                            {% elif content.file_path.split('.').pop() in ['ods','xlsx','csv'] %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-spreadsheet icon-size"></i>
+                                            {% elif content.file_path.split('.').pop() in ['odp','pptx','ppt'] %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-slides icon-size"></i>
+                                            {% elif content.file_path.split('.').pop() in ['doc','docx','odt','odf','txt'] %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-text icon-size"></i>
+                                            {% elif content.file_path.split('.').pop() == 'rtf' %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-richtext icon-size"></i>
+                                            {% elif content.file_path.split('.').pop() in ['mp3','wav'] %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-music icon-size"></i>
+                                            {% else %}
+                                                <i id="fileicon{{ content.id }}" class="bi bi-file-earmark icon-size"></i>
+                                            {% endif %}
+                                        </div>
                                         <a id="filename{{ content.id }}" href="{{ url_for('get_file',filename=content.file_path) }}" download>{{ content.file_path.split('/').pop() }}</a> 
-                                        {% if content.file_path.split('.').pop() == 'pdf' %}          
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-pdf-fill icon-size"></i>
-                                        {% elif content.file_path.split('.').pop() in ['ods','xlsx','csv'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-spreadsheet icon-size"></i>
-                                        {% elif content.file_path.split('.').pop() in ['odp','pptx','ppt'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-slides icon-size"></i>
-                                        {% elif content.file_path.split('.').pop() in ['doc','docx','odt','odf','txt'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-text icon-size"></i>
-                                        {% elif content.file_path.split('.').pop() == 'rtf' %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark-richtext icon-size"></i>
-                                        {% elif content.file_path.split('.').pop() in ['mp3','wav'] %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-music icon-size"></i>
-                                        {% else %}
-                                            <i id="fileicon{{ content.id }}" class="bi bi-file-earmark icon-size"></i>
-                                        {% endif %}
                                     {% endif %}
                                     {% if current_user.id == course.lecturer_id %}
                                         <button class="btn btn-outline-secondary" id="filedelete{{ content.id }}" onclick="deleteFile({{ content.id }})"><i class="bi bi-trash" ></i></button>
