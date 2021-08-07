@@ -2,9 +2,11 @@
 
 {% block content %}
     <h1>Search Results</h1>
-    {% for course in courses %}
-        {% include '_card.html' %}
-    {% endfor %}
+    <div class="row row-cols-1 row-cols-md-5 g-4 mb-3">
+        {% for course in courses %}
+            {% include '_card.html' %}
+        {% endfor %}
+    </div> 
     <nav aria-label="Search navigation">
         <ul class="pagination">
             {% if prev_url %}

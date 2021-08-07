@@ -28,14 +28,14 @@
         {% endif %}
     </div>
 </div>    
-<div class="row row-cols-1 row-cols-md-5 g-4">
+<div class="row row-cols-1 row-cols-md-5 g-4 mb-3">
     {% for course in user.get_own_courses() %}
             {% include '_card.html' %}
     {% endfor %}
 </div>
 <hr>
 <h1>Learning courses</h1>
-<div class="row row-cols-1 row-cols-md-5 g-4">
+<div class="row row-cols-1 row-cols-md-5 g-4 mb-3">
     {% for course in courses %}
         {% if current_user.is_learning(course) %}
             {% include '_card.html' %}           

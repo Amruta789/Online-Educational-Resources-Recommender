@@ -2,11 +2,11 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
-    COURSES_PER_PAGE = 3
+    COURSES_PER_PAGE = 10
     UPLOADS_DEFAULT_DEST=os.path.join(basedir, 'instance/uploads')
     #UPLOADED_FILES_ALLOW=tuple('jfif')
     SECRET_KEY = 'dev'
-    SQLALCHEMY_DATABASE_URI ='sqlite:///' + os.path.join(basedir, 'instance/search.db')
+    SQLALCHEMY_DATABASE_URI ='sqlite:///' + os.path.join(basedir, 'instance/final.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = os.environ.get('MAIL_SERVER') # localhost or smtp.googlemail.com
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25) # 8025 or 587

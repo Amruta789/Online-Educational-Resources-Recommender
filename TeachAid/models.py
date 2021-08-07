@@ -89,7 +89,8 @@ class Content(db.Model):
     module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
     module = db.relationship('Module', backref=db.backref('content',lazy='dynamic', collection_class=list))
     
-class User(UserMixin, db.Model):
+class User(SearchableMixin,UserMixin, db.Model):
+    __searchable__=['username']
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)

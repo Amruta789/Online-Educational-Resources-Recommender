@@ -44,7 +44,7 @@ def youtube_search(keyword, developer_key):
         youtubeitem['channelTitle']=search_result['snippet']['channelTitle']
         youtubeitem['channelURL']=urlchannel+search_result['snippet']['channelId']
         youtubeitem['imageURL']=search_result['snippet']['thumbnails']['default']
-        print(youtubeitem)
+        #print(youtubeitem)
         youtube_recommendations.append(youtubeitem)
     return youtube_recommendations
 
@@ -67,7 +67,7 @@ def google_search(keyword, startIndex, developer_key):
         googleitem['description']=search_result['snippet']
         if 'pagemap' in search_result:
             googleitem['imageUrl']=search_result['pagemap']['cse_image'][0]['src']
-        print(googleitem)
+        #print(googleitem)
         google_recommendations.append(googleitem)
     return google_recommendations
 

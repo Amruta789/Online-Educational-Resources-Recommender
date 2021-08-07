@@ -4,11 +4,10 @@ html {
   padding: 1rem;
 }
 
-/* body { */
-  /* max-width: 960px; */
-  /* margin: 0 auto; */
-  /* background: white; */
-/* } */
+ body { 
+  margin: 0 auto; 
+   background: white; 
+ } 
 
 .is-hidden{
   display: none;
@@ -158,5 +157,5 @@ input[type=submit] {
 }
 
 .icon-size{
-  font-size: 5rem;
+  font-size: 6rem;
 }
