@@ -19,4 +19,5 @@ Installation Instructions:
     `flask run` to start the development server
 
 Now you can login, create courses, modify courses, and learn courses. Login as multiple users and test the interface.
+Here is the YouTube video where I made a short demo of some features: https://youtu.be/FgGLR-VEBYA
 
